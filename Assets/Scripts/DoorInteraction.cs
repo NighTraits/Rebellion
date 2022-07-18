@@ -10,8 +10,6 @@ public class DoorInteraction : MonoBehaviour
     static public bool GameOver = false, GameClear = false;
     private AudioSource door;
    
-
-
     private void Start()
     {
         DoorAnimation = GetComponent<Animator>();
@@ -43,7 +41,7 @@ public class DoorInteraction : MonoBehaviour
         }
     }
 
-    private IEnumerator  Wait(){
+    private IEnumerator Wait(){
         
         // Open door
         if (OpenDoor && Input.GetKeyDown(KeyCode.F) && CharacterController.GotKey)

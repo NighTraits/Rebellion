@@ -5,12 +5,14 @@ using UnityEngine.SceneManagement;
 
 public class MenuInicial : MonoBehaviour
 {
-
+    // start the game
     public void Jugar()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        Health.dead = false;
     }
 
+    // Exit game
     public void Salir()
     {
         Debug.Log("Salir...");

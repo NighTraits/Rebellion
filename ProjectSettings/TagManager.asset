@@ -12,6 +12,7 @@ TagManager:
   - Tutorial_3
   - Message_1
   - FallDetector
+  - Tutorial_0
   layers:
   - Default
   - TransparentFX
