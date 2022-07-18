@@ -1,0 +1,69 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Chest
+  - Door
+  - DoorChest
+  - Tutorial_1
+  - Tutorial_2
+  - Tutorial_3
+  - Message_1
+  - FallDetector
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Background
+    uniqueID: 3548925037
+    locked: 0
+  - name: Foreground
+    uniqueID: 1856713319
+    locked: 0
+  - name: Ground
+    uniqueID: 4267504145
+    locked: 0
+  - name: Environment
+    uniqueID: 2939621569
+    locked: 0
+  - name: Walls
+    uniqueID: 2947576977
+    locked: 0
+  - name: Knight
+    uniqueID: 1818795783
+    locked: 0
