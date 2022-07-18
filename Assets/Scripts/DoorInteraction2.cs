@@ -2,25 +2,29 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DoorInteraction : MonoBehaviour
+public class DoorInteraction2 : MonoBehaviour
 {
-    Animator DoorAnimation;
     private TextAlignment OpenDoorText;
     private bool OpenDoor = false;
     static public bool GameOver, GameClear;
-    private AudioSource door;
-   
+
     private void Start()
     {   
         GameOver = false;
         GameClear = false;
-        DoorAnimation = GetComponent<Animator>();
-        door = GetComponent<AudioSource>();
     }
 
    private  void Update()
     {
-        StartCoroutine(Wait());
+        // Open door
+        if (OpenDoor && Input.GetKeyDown(KeyCode.F) && CharacterControllerLvl2.GotKey)
+        {
+            GameClear = true;
+            
+        } else if(OpenDoor && Input.GetKeyDown(KeyCode.F))
+        {
+            GameOver = true;
+        }
     }
 
     // Enter door trigger area
@@ -30,8 +34,6 @@ public class DoorInteraction : MonoBehaviour
         {
             Debug.Log("Near Door");
             OpenDoor = true;
-
-            
         }
     }
 
@@ -45,19 +47,4 @@ public class DoorInteraction : MonoBehaviour
         }
     }
 
-    private IEnumerator Wait(){
-        
-        // Open door
-        if (OpenDoor && Input.GetKeyDown(KeyCode.F) && CharacterController.GotKey)
-        {
-            DoorAnimation.SetTrigger("OpeningDoor");
-            yield return new WaitForSeconds( 3.0F );
-            GameClear = true;
-            door.Play();
-
-        } else if(OpenDoor && Input.GetKeyDown(KeyCode.F))
-        {
-            GameOver = true;
-        }
-    }
 }
