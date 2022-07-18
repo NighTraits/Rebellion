@@ -2,30 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+
 
 public class CharacterController : MonoBehaviour
 {
      // Move player in 2D space
-    public float maxSpeed = 3.4f;
-    public float jumpHeight = 6.5f;
-    public float gravityScale = 1.5f;
+    public float maxSpeed = 8.5f;
+    public float jumpHeight = 25f;
+    public float gravityScale = 9f;
     bool facingRight = false;
     float moveDirection = 0;
     bool isGrounded = false;
     Rigidbody2D r2d;
     CapsuleCollider2D mainCollider;
     Transform t;
-
     private Vector3 respawnPoint;
     public GameObject FallDetector;
-
     private AudioSource saltar;
-   
-
     Animator playerAnim;
-
-    private bool isPaused = false;
-    public Canvas gamePausedCanvas, buttonADCanvas, buttonWCanvas, buttonFCanvas, messageCanvas, GameOverCanvas, GameClearCanvas;
+    static public bool isPaused = false;
+    public Canvas gamePausedCanvas, buttonADCanvas, buttonWCanvas, buttonFCanvas, messageCanvas, gameOverCanvas;
     static public bool GotKey = false;
     public Image keyImage;
     GameObject chest1, chest2, chest3;
@@ -44,24 +41,27 @@ public class CharacterController : MonoBehaviour
         facingRight = t.localScale.x > 0;
         respawnPoint = transform.position;
         saltar = GetComponent<AudioSource>();
-        
-        
+
+        isPaused = false;
+        Time.timeScale = 1;
         // Items
         keyImage.enabled = false;
 
         // canvas
         gamePausedCanvas.gameObject.SetActive(false);
+        buttonADCanvas.gameObject.SetActive(true);
         buttonWCanvas.gameObject.SetActive(false);
         buttonFCanvas.gameObject.SetActive(false);
         messageCanvas.gameObject.SetActive(false);
-        GameOverCanvas.gameObject.SetActive(false);
-        GameClearCanvas.gameObject.SetActive(false);
+        gameOverCanvas.gameObject.SetActive(false);
+        // gameClearCanvas.gameObject.SetActive(false);
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        // Movement controls
+        // Movement controls        
         if ((Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D)) && (isGrounded || Mathf.Abs(r2d.velocity.x) > 0.01f))
         {
             moveDirection = Input.GetKey(KeyCode.A) ? -1 : 1;
@@ -98,10 +98,11 @@ public class CharacterController : MonoBehaviour
             r2d.velocity = new Vector2(r2d.velocity.x, jumpHeight);
             playerAnim.SetBool("IsJumping", true);
             saltar.Play();
+
         }
 
         // Pause
-        if(Input.GetKeyDown(KeyCode.P)){
+        if(Input.GetKeyDown(KeyCode.Escape)){
             if(isPaused == false){
                 Time.timeScale = 0;
                 isPaused = true;
@@ -124,15 +125,15 @@ public class CharacterController : MonoBehaviour
         // Game Clear 
         if (DoorInteraction.GameClear)
         {
-            GameClearCanvas.gameObject.SetActive(true);
-            Time.timeScale = 0;
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
 
         //Game Over
-        if(DoorInteraction.GameOver)
+        if(DoorInteraction.GameOver || Health.dead)
         {
-            GameOverCanvas.gameObject.SetActive(true);
+            gameOverCanvas.gameObject.SetActive(true);
             Time.timeScale = 0;
+            isPaused = true;
         }
 
     }
@@ -171,6 +172,17 @@ public class CharacterController : MonoBehaviour
     // Controlls tutorial
     private void OnTriggerEnter2D(Collider2D other)
     {
+        if(other.CompareTag("Tutorial_0"))
+        {
+            gamePausedCanvas.gameObject.SetActive(false);
+            buttonADCanvas.gameObject.SetActive(true);
+            buttonWCanvas.gameObject.SetActive(false);
+            buttonFCanvas.gameObject.SetActive(false);
+            messageCanvas.gameObject.SetActive(false);
+            gameOverCanvas.gameObject.SetActive(false);
+            // gameClearCanvas.gameObject.SetActive(false);
+        }
+        
         if(other.CompareTag("Tutorial_1"))
         {
             buttonADCanvas.gameObject.SetActive(false);
@@ -191,12 +203,12 @@ public class CharacterController : MonoBehaviour
         if(other.CompareTag("Message_1"))
         {
             messageCanvas.gameObject.SetActive(true);
+            respawnPoint = transform.position;
         }
 
         if(other.tag == "FallDetector")
         {
             transform.position = respawnPoint;
-
         }
     }
 }
