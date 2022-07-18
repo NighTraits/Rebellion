@@ -13,6 +13,8 @@ TagManager:
   - Message_1
   - FallDetector
   - Tutorial_0
+  - Checkpoint
+  - Item
   layers:
   - Default
   - TransparentFX

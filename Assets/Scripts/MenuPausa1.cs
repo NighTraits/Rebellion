@@ -29,13 +29,12 @@ public class MenuPausa1 : MonoBehaviour
     // Regresar al menú de inicio
     public void Cerrar()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+        SceneManager.LoadScene(0);
     }
 
     // Cerrar el juego
     public void Exit()
     {
-        Debug.Log("CERRANDOOOOO!!!!!");
         Application.Quit();
     }
 }

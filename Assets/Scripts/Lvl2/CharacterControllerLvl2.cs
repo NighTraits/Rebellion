@@ -2,13 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class CharacterControllerLvl2 : MonoBehaviour
 {
      // Move player in 2D space
-    public float maxSpeed = 3.4f;
-    public float jumpHeight = 6.5f;
-    public float gravityScale = 1.5f;
+    public float maxSpeed = 8.5f;
+    public float jumpHeight = 25f;
+    public float gravityScale = 9f;
     bool facingRight = false;
     float moveDirection = 0;
     bool isGrounded = false;
@@ -25,8 +26,11 @@ public class CharacterControllerLvl2 : MonoBehaviour
     Animator playerAnim;
 
     private bool isPaused = false;
-    public Canvas gamePausedCanvas, GameOverCanvas, GameClearCanvas;
-    static public bool GotKey = false;
+    public Canvas gamePausedCanvas, gameOverCanvas, gameClearCanvas;
+
+    public Image keyImage;
+    static public bool GotKey;
+
 
     // Use this for initialization
     void Start()
@@ -43,12 +47,22 @@ public class CharacterControllerLvl2 : MonoBehaviour
         respawnPoint = transform.position;
         saltar = GetComponent<AudioSource>();
         
+        GotKey = false;
+        
+        isPaused = false;
+        Time.timeScale = 1;
+
+        DoorInteraction.GameOver = false;
+        DoorInteraction.GameClear = false;
+
+
         // Items
+        keyImage.enabled = false;
 
         // canvas
         gamePausedCanvas.gameObject.SetActive(false);
-        GameOverCanvas.gameObject.SetActive(false);
-        GameClearCanvas.gameObject.SetActive(false);
+        gameOverCanvas.gameObject.SetActive(false);
+        gameClearCanvas.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -94,7 +108,7 @@ public class CharacterControllerLvl2 : MonoBehaviour
         }
 
         // Pause
-        if(Input.GetKeyDown(KeyCode.P)){
+        if(Input.GetKeyDown(KeyCode.Escape)){
             if(isPaused == false){
                 Time.timeScale = 0;
                 isPaused = true;
@@ -107,19 +121,20 @@ public class CharacterControllerLvl2 : MonoBehaviour
             }
         }
         
-
         // Game Clear 
-        if (DoorInteraction.GameClear)
+        if (DoorInteraction2.GameClear)
         {
-            GameClearCanvas.gameObject.SetActive(true);
             Time.timeScale = 0;
+            isPaused = true;
+            gameClearCanvas.gameObject.SetActive(true);
         }
 
         //Game Over
-        if(DoorInteraction.GameOver)
+        if(DoorInteraction2.GameOver || Health.dead)
         {
-            GameOverCanvas.gameObject.SetActive(true);
             Time.timeScale = 0;
+            isPaused = true;
+            gameOverCanvas.gameObject.SetActive(true);
         }
 
     }
@@ -162,6 +177,18 @@ public class CharacterControllerLvl2 : MonoBehaviour
         {
             transform.position = respawnPoint;
 
+        }
+
+        if(other1.tag == "Checkpoint")
+        {
+            respawnPoint = transform.position;
+        }
+
+        if(other1.tag == "Item")
+        {
+            keyImage.enabled = true;
+            GotKey = true;
+            Destroy(other1.gameObject, 0.5f);
         }
     }
 }

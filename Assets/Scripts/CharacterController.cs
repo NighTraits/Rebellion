@@ -17,12 +17,17 @@ public class CharacterController : MonoBehaviour
     Rigidbody2D r2d;
     CapsuleCollider2D mainCollider;
     Transform t;
+
     private Vector3 respawnPoint;
     public GameObject FallDetector;
+
     private AudioSource saltar;
+
     Animator playerAnim;
+
     static public bool isPaused = false;
     public Canvas gamePausedCanvas, buttonADCanvas, buttonWCanvas, buttonFCanvas, messageCanvas, gameOverCanvas;
+    
     static public bool GotKey = false;
     public Image keyImage;
     GameObject chest1, chest2, chest3;
@@ -39,11 +44,12 @@ public class CharacterController : MonoBehaviour
         r2d.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
         r2d.gravityScale = gravityScale;
         facingRight = t.localScale.x > 0;
-        respawnPoint = transform.position;
         saltar = GetComponent<AudioSource>();
-
+        
+        respawnPoint = transform.position;
         isPaused = false;
         Time.timeScale = 1;
+        
         // Items
         keyImage.enabled = false;
 
@@ -54,8 +60,6 @@ public class CharacterController : MonoBehaviour
         buttonFCanvas.gameObject.SetActive(false);
         messageCanvas.gameObject.SetActive(false);
         gameOverCanvas.gameObject.SetActive(false);
-        // gameClearCanvas.gameObject.SetActive(false);
-
     }
 
     // Update is called once per frame
@@ -180,7 +184,6 @@ public class CharacterController : MonoBehaviour
             buttonFCanvas.gameObject.SetActive(false);
             messageCanvas.gameObject.SetActive(false);
             gameOverCanvas.gameObject.SetActive(false);
-            // gameClearCanvas.gameObject.SetActive(false);
         }
         
         if(other.CompareTag("Tutorial_1"))
